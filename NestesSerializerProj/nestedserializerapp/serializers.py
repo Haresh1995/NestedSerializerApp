@@ -16,14 +16,6 @@ class InvoiceDetailModelSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Price must be a positive number.")
         return value
-    
-    def create(self, validated_data):
-        validated_data['line_total'] = validated_data['quantity'] * validated_data['price']
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        validated_data['line_total'] = validated_data.get('quantity', instance.quantity) * validated_data.get('price', instance.price)
-        return super().update(instance, validated_data)
 
 class InvoiceModelSerializer(serializers.ModelSerializer):
     details = InvoiceDetailModelSerializer(many=True)
